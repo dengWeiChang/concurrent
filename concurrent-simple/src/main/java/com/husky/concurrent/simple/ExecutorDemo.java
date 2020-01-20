@@ -1,7 +1,6 @@
 package com.husky.concurrent.simple;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -45,7 +44,15 @@ public class ExecutorDemo {
 //			callAble();
 //			runnable();
 //			awaitTermination();
-			System.out.println(Integer.toBinaryString((1 << 29)-1 ));
+//			executors();
+			List<Integer> list = new ArrayList<>();
+			list.add(1);
+			list.add(2);
+			list.add(3);
+			Collections.shuffle(list);
+			list.forEach(System.out::println);
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			EXECUTOR.shutdown();
 		}
@@ -90,6 +97,10 @@ public class ExecutorDemo {
 		EXECUTOR.execute(runnable);
 	}
 
+	/**
+	 * TODO:暂时没什么用处
+	 * @throws InterruptedException
+	 */
 	private static void awaitTermination() throws InterruptedException {
 		EXECUTOR.submit(() -> {
 			try {
@@ -112,4 +123,23 @@ public class ExecutorDemo {
 		System.out.println("active task count:" + EXECUTOR.getActiveCount());
 		System.out.println(b);
 	}
+
+	/**
+	 * @see Executors
+	 */
+	private static void executors() throws ExecutionException, InterruptedException {
+		ExecutorService executorService = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
+		Runnable runnable = () -> {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println("耗时操作");
+			throw new RuntimeException("fuck");
+		};
+		executorService.execute(runnable);
+		executorService.shutdown();
+	}
+
 }
