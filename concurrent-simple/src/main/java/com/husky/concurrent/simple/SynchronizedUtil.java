@@ -17,8 +17,10 @@ public class SynchronizedUtil {
 	public static void main(String[] args) {
 //		countDownLatch();
 //		cyclicBarrier();
-		simpleBarrier();
+//		simpleBarrier();
 //		childSynchronized();
+		System.out.println(Integer.toBinaryString(-1 << 29));
+		System.out.println(Integer.toBinaryString((-1<<29)+1));
 	}
 	/**
 	 * 倒计时门闩
@@ -184,6 +186,13 @@ public class SynchronizedUtil {
 			});
 		}
 		executorService.shutdown();
+	}
+
+	/**
+	 * 信号量许可证
+	 */
+	private static void semaphore() {
+
 	}
 
 	/**

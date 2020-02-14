@@ -31,10 +31,42 @@ public class Race {
 	private static final int DATA_HAPPENS_BEFORE_ORDERING = 2;
 
 
+	private static int a = 10;
+
+	private void add () {
+		a ++;
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 //		synchronizeObjectMethod();
-		synchronizeClassMethod();
+//		synchronizeClassMethod();
+		Race race = new Race();
+		new Thread(() -> {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			race.add();
+			System.out.println("线程1---"+a);
+		}).start();
+		new Thread(()->{
+			System.out.println("线程2---"+a);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			if (a == 10) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				System.out.println("线程2---"+a);
+			}
+
+		}).start();
 	}
 
 	/**
